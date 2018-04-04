@@ -19,3 +19,6 @@ def classify(inX,dataSet,labels,k):
 		classCount[voteIlabel] = classCount.get(voteIlabel,0) +1
 	sortedClassCount = sorted(classCount.iteritems(),key=operator.itemgetter(1),reverse=true)
 	return sortedClassCount[0][0] 
+
+	# test
+	classify([1,1],group,labels,3)
