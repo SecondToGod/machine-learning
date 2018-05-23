@@ -1,5 +1,10 @@
-import * as tf from '@tensorflow/tfjs';
-import { tensor, tensor1d } from '@tensorflow/tfjs';
+'use strict';
+
+var _tfjs = require('@tensorflow/tfjs');
+
+var tf = _interopRequireWildcard(_tfjs);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 // //定义线性回归模型
 // const model = tf.sequential();
@@ -49,34 +54,38 @@ import { tensor, tensor1d } from '@tensorflow/tfjs';
 // });
 
 //实现线性回归模型 y = w * x + b
-const tx = [1,2,3,4,5];
-const ty = [2,4,6,8,10];
-const w = tf.variable(tf.scalar(Math.random()));
-const b = tf.variable(tf.scalar(Math.random()));
-const train_x = tensor1d(tx);
-const train_y = tensor1d(ty);
+var tx = [1, 2, 3, 4, 5];
+var ty = [2, 4, 6, 8, 10];
+var w = tf.variable(tf.scalar(Math.random()));
+var b = tf.variable(tf.scalar(Math.random()));
+var train_x = (0, _tfjs.tensor1d)(tx);
+var train_y = (0, _tfjs.tensor1d)(ty);
 
 //定义学习率和迭代次数
-const iterations = 200; 
-const learningRate = 0.5;
+var iterations = 200;
+var learningRate = 0.5;
 
-const f = x => w.mul(x).add(b);
+var f = function f(x) {
+    return w.mul(x).add(b);
+};
 
 //选择优化器sgd,momentum,adam等
-const optimizer = tf.train.adam(learningRate);
+var optimizer = tf.train.adam(learningRate);
 
 //定义均方差损失函数
-const loss = (pred,label) => pred.sub(label).square().mean();
+var loss = function loss(pred, label) {
+    return pred.sub(label).square().mean();
+};
 
 //开始训练
-for(let iter = 0;iter < iterations;iter++){
-    optimizer.minimize(()=>{
-        const loss_var = loss(f(train_x),train_y);
+for (var iter = 0; iter < iterations; iter++) {
+    optimizer.minimize(function () {
+        var loss_var = loss(f(train_x), train_y);
         console.log('loss: ');
         loss_var.print();
         console.log('w: ');
         w.print();
         //b.print();
         return loss_var;
-    })
+    });
 }
