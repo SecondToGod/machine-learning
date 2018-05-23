@@ -1,0 +1,17 @@
+{
+  "name": "tensorflow",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tensorflow-learning.js",
+  "dependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel tensorflow-learning.js -o ML.js && node ML.js && rm ML.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
