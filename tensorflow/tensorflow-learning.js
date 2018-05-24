@@ -81,43 +81,62 @@ import * as tf from '@tensorflow/tfjs';
 // }
 
 //实现logistic回归
-function logistic_regression(train_data,train_label){
-    const iterations = 200;
-    const learningRate = 0.1;
-    const optimizer = tf.train.adam(learningRate);
+// function logistic_regression(train_data,train_label){
+//     const iterations = 200;
+//     const learningRate = 0.1;
+//     const optimizer = tf.train.adam(learningRate);
 
-    //计算类别数量
-    const num_labels = Array.from(new Set(train_label)).length;
-    const num_data = train_label.length;
+//     //计算类别数量
+//     const num_labels = Array.from(new Set(train_label)).length;
+//     const num_data = train_label.length;
 
-    const w = tf.variable(tf.zeros([2,num_labels]));
-    const b = tf.variable(tf.zeros([num_labels]));
+//     const w = tf.variable(tf.zeros([2,num_labels]));
+//     const b = tf.variable(tf.zeros([num_labels]));
 
+//     const train_x = tf.tensor2d(train_data);
+//     const train_y = tf.tensor1d(train_label,'int32');
+
+//     function predict(x){
+//         return tf.softmax(tf.add(tf.matMul(x,w),b));
+//     }
+//     //定义交叉熵损失函数
+//     function loss(predictions,labels){
+//         const y = tf.oneHot(labels,num_labels);
+//         const entropy = tf.mean(tf.sub(tf.scalar(1),tf.sum(tf.mul(y,tf.log(predictions)),1)));
+//         return entropy;
+//     }
+//     //开始训练
+//     for(let iter=0;iter<iterations;iter++){
+//         optimizer.minimize(()=>{
+//             const loss_var = loss(predict(train_x),train_y);
+//             loss_var.print();
+//             return loss_var;
+//         });
+//     }
+//     console.log('训练完毕...\n test:');
+
+//     console.log('[7,7]: ',predict(tf.tensor2d([[7,7]])).print());
+// }
+
+ const train_data = [[1,2],[1,3],[2,3],[2,4],[3,5],[3,6],[5,5],[6,7],[7,6]];
+ const train_label = [1,1,2,2,3,3,5,6,7];
+// logistic_regression(train_data,train_label);
+
+//实现knn L1距离度量
+function knn(train_data,train_label){
     const train_x = tf.tensor2d(train_data);
     const train_y = tf.tensor1d(train_label,'int32');
 
-    function predict(x){
-        return tf.softmax(tf.add(tf.matMul(x,w),b));
-    }
-    //定义交叉熵损失函数
-    function loss(predictions,labels){
-        const y = tf.oneHot(labels,num_labels);
-        const entropy = tf.mean(tf.sub(tf.scalar(1),tf.sum(tf.mul(y,tf.log(predictions)),1)));
-        return entropy;
-    }
-    //开始训练
-    for(let iter=0;iter<iterations;iter++){
-        optimizer.minimize(()=>{
-            const loss_var = loss(predict(train_x),train_y);
-            loss_var.print();
-            return loss_var;
+    return function(x){
+        var res = [];
+        x.map((point)=>{
+            const input_tensor = tf.tensor1d(point);
+            const distance = tf.sum(tf.abs(tf.sub(input_tensor,train_x)),1);
+            const index = tf.argMin(distance, 0);
+            res.push(train_label[index.dataSync()[0]]);
         });
+        return res;
     }
-    console.log('训练完毕...\n test:');
-
-    console.log('[7,7]: ',predict(tf.tensor2d([[7,7]])).print());
 }
-
-const train_data = [[1,2],[1,3],[2,3],[2,4],[3,5],[3,6],[5,5],[6,7],[7,6]];
-const train_label = [1,1,2,2,3,3,5,6,7];
-logistic_regression(train_data,train_label);
+let pred = knn(train_data,train_label)([[2,2]]);
+console.log(pred);
