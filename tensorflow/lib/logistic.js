@@ -31,4 +31,7 @@ export function logistic_regression(train_data,train_label){
             return loss_var;
         });
     }
+    return {
+        predict: predict
+    };
 }
