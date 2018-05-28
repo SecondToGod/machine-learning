@@ -19,15 +19,28 @@ def test():
     key = cv.waitKey(0)
     if key == 27:
         cv.destroyAllWindows()
+
     elif key == ord('s'):
         # 保存图像
         cv.imwrite('newtest.png',newImg)
         print("保存完毕!\n")
+
     elif key == ord('m'):
         # 放大图像
         res = cv.resize(img,(2*width,2*height),interpolation=cv.INTER_CUBIC)
         cv.imwrite('scaleImg.png',res)
         print("保存完毕!\n")
+
+    elif key == ord('e'):
+        # 边缘提取
+        img_gray = cv.cvtColor(img,cv.COLOR_BGR2GRAY)
+        img_gb = cv.GaussianBlur(img_gray,(5,5),0)
+        edges = cv.Canny(img_gray,100,200)
+        cv.imshow('edge',edges)
+        cv.imwrite('edges.png',edges)
+        cv.waitKey(0)
+        cv.destroyAllWindows()
+
     elif key == ord('b'):
         # 图像信息二值化
         th=100
