@@ -1,5 +1,4 @@
 import cv2 
-import numpy as np
 
 origin = cv2.imread('test.jpg')
 cv2.namedWindow('origin',cv2.WINDOW_NORMAL)
