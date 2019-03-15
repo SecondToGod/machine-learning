@@ -1,2 +1,5 @@
 node_modules/
 
+MNIST_data/
+
+cifar10/
